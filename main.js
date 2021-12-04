@@ -1,7 +1,6 @@
 // Require the necessary discord.js classes
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const config = require('./config.json');
 const dotenv = require('dotenv');
 
 dotenv.config();
