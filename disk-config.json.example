@@ -1,0 +1,16 @@
+{
+    "disks":[
+        {
+            "name":"Root Partition",
+            "mountpoint":"/",
+            "used":"",
+            "size":""
+        },
+        {
+            "name":"Some Other Drive",
+            "mountpoint":"/boot/efi",
+            "used":"",
+            "size":""
+        }
+    ]
+}
