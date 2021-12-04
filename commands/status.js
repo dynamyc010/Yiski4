@@ -2,7 +2,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Embed } = require('discord.js');
 const si = require('systeminformation');
 const diskcfg = require('../disk-config.json');
-const filesize = require('../libraries/filesize.js');
 
 request = {
     system: 'model, version',
@@ -31,8 +30,8 @@ module.exports = {
             disks.forEach(disk =>{
                 diskcfg.disks.forEach(a =>{
                     if(a.mountpoint == disk.mount){
-                        a.used = disk.used / 100000000;
-                        a.size = disk.size  / 100000000;
+                        a.used = disk.used / 107000000;
+                        a.size = disk.size  / 107000000;
                     }
                 })
             })
@@ -55,7 +54,7 @@ module.exports = {
                     },
                     {
                         name: '**Memory Usage**',
-                        value: `**${filesize(data.mem.free,{base: 2})}**GB / **${filesize(data.mem.total,{base: 2})}**GB`,
+                        value: `**${Math.floor(data.mem.free/107000000)/10}**GB / **${Math.floor(data.mem.total/107000000)/10}**GB`,
                     },
                     {
                         name: `**Storage Usage**`,
@@ -79,15 +78,12 @@ module.exports = {
                     text: 'Hii!'
                 },
             };
-    
             diskcfg.disks.forEach(disk => {
                 embed.fields[3].value += `**${disk.name}** (${disk.mountpoint})\n`+
-                                                        `**${Math.floor(disk.used)/10}** GB / **${Math.floor(disk.size)/10}** GB\n`+
-                                                        `**${(Math.floor((disk.size-disk.used)))/10}** GB remains\n`;
+                                                        `**${Math.floor(disk.used)/10}**GB / **${Math.floor(disk.size)/10}**GB\n`+
+                                                        `**${(Math.floor((disk.size-disk.used)))/10}**GB remains\n`;
             })
         })
-        
         await interaction.editReply({embeds : [embed]});
-
 	},
 };
