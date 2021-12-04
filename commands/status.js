@@ -82,8 +82,8 @@ module.exports = {
     
             diskcfg.disks.forEach(disk => {
                 embed.fields[3].value += `**${disk.name}** (${disk.mountpoint})\n`+
-                                                        `**${Math.floor(disk.used*0.93)/10}** GB / **${Math.floor(disk.size*0.93)/10}** GB\n`+
-                                                        `**${(Math.floor((disk.size-disk.used)*0.93))/10}** GB remains\n`;
+                                                        `**${Math.floor(disk.used)/10}** GB / **${Math.floor(disk.size)/10}** GB\n`+
+                                                        `**${(Math.floor((disk.size-disk.used)))/10}** GB remains\n`;
             })
         })
         
