@@ -1,6 +1,31 @@
 {
   "dependencies": {
+    "@discordjs/builders": "^0.9.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.25.2",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
     "os-utils": "^0.0.14",
     "systeminformation": "^5.8.0"
-  }
+  },
+  "name": "yiski4",
+  "description": "A Status Bot built specifically for Devin, made by dynamyc!",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js",
+    "main": "node main.js",
+    "register-commands": "node register-commands.js",
+    "register": "node register-commands.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dynamyc010/Yiski4.git"
+  },
+  "author": "dynamyc010",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dynamyc010/Yiski4/issues"
+  },
+  "homepage": "https://github.com/dynamyc010/Yiski4#readme"
 }

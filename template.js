@@ -20,13 +20,11 @@ function runCode(){
         const memUsedPercent = Math.floor((100-memFreePercent)*10)/10;
         var disks = 0;
         si.fsSize().then(data => disks = JSON.parse(JSON.stringify(data))).then(() => {
-            var rootfs = 0;
-            var ssd = 0;
             disks.forEach(disk => {
                 if(disk.mount == "/"){
                     rootfs = JSON.parse(JSON.stringify(disk));
                 }
-                else if (disk.mount == "/mnt/c" /* "/mnt/SSD" */){
+                else if (disk.mount == "/boot/efi" /* "/mnt/SSD" */){
                     ssd = JSON.parse(JSON.stringify(disk))
                 }
             });
@@ -67,16 +65,18 @@ function runCode(){
 }
 
 
-//runCode();
+runCode();
 
-si.networkStats();
+// si.networkStats();
 
-setInterval(function() {
-    si.networkStats().then(data => {
-        console.log(data);
-    })
-}, 10000)
+// setInterval(function() {
+//     si.networkStats().then(data => {
+//         console.log(data);
+//     })
+// }, 10000)
 //si.fsSize().then(data => console.log(data));
+
+
 //setInterval(runCode, 1000);
 
 
