@@ -32,7 +32,7 @@ namespace yiski4 {
             client.Ready += Client_Ready;
             client.SlashCommandExecuted += SlashCommandHandler;
 
-            var token = File.ReadAllText("token.txt");
+            var token = await File.ReadAllTextAsync("token.txt");
 
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
@@ -40,7 +40,7 @@ namespace yiski4 {
             await Task.Delay(-1);
         }
 
-        async Task Client_Ready() {
+        async Task Client_Ready() { // it's 1 slash command, how bad can this beeeee - devin
             var slshCmd = new SlashCommandBuilder();
 
             slshCmd.WithName("status");
@@ -52,12 +52,16 @@ namespace yiski4 {
         }
 
         private async Task SlashCommandHandler(SocketSlashCommand cmd) {
+            string[] funniFooters = { "hihi", "uwu", "owo", "wazbewwy pwi fwour?? uwu?", "-w-", "hwody fwen!", "fern!- i mean frewn!", "meep", "hihi again!", "hai!" };
+            
             var sysEmbed = new EmbedBuilder {
-                Title = "Devin's Raspberry Pi 4 - System"
+                Title = "Devin's Raspberry Pi 4 - System",
+                Color = 0x00a86b
             };
             
             var serviceEmbed = new EmbedBuilder {
-                Title = "Devin's Raspberry Pi 4 - Services"
+                Title = "Devin's Raspberry Pi 4 - Services",
+                Color = 0x00a86b
             };
 
             var rpiModel = System.IO.File.Exists(@"/proc/device-tree/model") ? System.IO.File.ReadAllText(@"/proc/device-tree/model".ToString()) : "Not a Raspberry Pi!";
@@ -84,10 +88,18 @@ namespace yiski4 {
                 "{todo}");
             sysEmbed.AddField("Distro", "{todo}\n" +
                                         $"**64 Bit**: {Environment.Is64BitOperatingSystem}");
-            sysEmbed.WithFooter("Hii!");
+            sysEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             sysEmbed.WithCurrentTimestamp();
 
+            serviceEmbed.AddField("**Plex**",
+                "{todo}", inline: true);
+            serviceEmbed.AddField("**Samba** [NAS]",
+                "{todo}", inline: true);
+            serviceEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
+            serviceEmbed.WithCurrentTimestamp();
+
             await cmd.RespondAsync(embed: sysEmbed.Build(), ephemeral: false);
+            await cmd.FollowupAsync(embed: serviceEmbed.Build(), ephemeral: false); // THIS IS PROBABLY NOT THE RIGHT SOLUTION BUT OH WELL! - devin
         }
 
         private Task Log(LogMessage msg) {
@@ -95,6 +107,7 @@ namespace yiski4 {
                 log.Error($"[Command/{msg.Severity}] {cmdException.Command.Aliases.First()}" + $" failed to execute in {cmdException.Context.Channel}.");
             } else {
                 switch (msg.Severity) { // look this is the only clean solution i had okay. :|
+                                        // looked at this half a day later, still feels like a hack, im so fucking sorry.
                     case LogSeverity.Info:
                         log.Info($"[General] {msg}");
                         break;
