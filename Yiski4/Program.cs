@@ -64,37 +64,51 @@ namespace yiski4 {
                 Color = 0x00a86b
             };
 
-            var rpiModel = System.IO.File.Exists(@"/proc/device-tree/model") ? System.IO.File.ReadAllText(@"/proc/device-tree/model".ToString()) : "Not a Raspberry Pi!";
-            string rpiProcessor;
+            var spec = new Specifications();
+            var services = new Services();
 
-            // foreach (string rpiRevision in File.ReadLines(@"/proc/cpuinfo").Where(rpiRevision => rpiRevision.StartsWith("Revision    : "))) {
-            //     return;
-            // }
-            
+            //////////////////////////////////////////////////////////
+            // Drives                                               //
+            // Reads drives from config and write them to the embed //
+            //////////////////////////////////////////////////////////
+            DriveInfo[] rpiDrives = DriveInfo.GetDrives();
+            string drives = "";
+
+            // TODO: Move this off to a config to read from
+            List<string> targets = new List<string>();
+            targets.Add("/");
+            targets.Add("/home");
+
+            foreach(var drive in rpiDrives.Where(x => targets.Contains(x.RootDirectory.ToString()))){
+                drives = $"{drives}**{drive.Name}**\n**{Math.Round((drive.TotalSize-drive.AvailableFreeSpace)/1000000000.0,1)}**GB / **{Math.Round(drive.TotalSize/1000000000.0,1)}**GB\n"+
+                $"**{Math.Round(drive.AvailableFreeSpace/1000000000.0,1)}**GB remains\n";
+            }
+
             sysEmbed.AddField("**Raspberry Pi Hardware**", // sys
-                $"**Model**: {rpiModel}\n" +
-                "**Processor**: {rpiRevision}\n" + // i took out the $ at the end because i cant figure it out please help... also we need to do terminal
-                                                    // related shenanigans eventually please HELP
-                "**Revision**: {`todo`}");
+                $"**Model**: `{spec.Model}`\n" +
+                $"**Processor**: `{spec.Processor()}`\n" +
+                $"**Revision**: `{spec.ProcessorRevision()}`");
             sysEmbed.AddField("Memory Usage", 
-                "{todo}GB / {todo}GB");
+                $"**{Math.Round(int.Parse(spec.MemUsed())/1024000.0,1)}**GB / **{Math.Round(int.Parse(spec.MemTotal())/1024000.0,1)}**GB");
+            sysEmbed.AddField("Swap Usage", 
+                $"**{Math.Round(int.Parse(spec.SwapUsed())/1024000.0,1)}**GB / **{Math.Round(int.Parse(spec.SwapTotal())/1024000.0,1)}**GB");
             sysEmbed.AddField("**CPU Usage**",
-                "{todo}");
-            sysEmbed.AddField("**Storage Usage**", 
-                "{massively todo oh god}");
+                $"{spec.ProcessorUsage()}");
+            sysEmbed.AddField("**Storage Usage**",$"{drives}");
+
             sysEmbed.AddField("Uptime", 
-                "{todo}");
+                $"{spec.Uptime()}");
             sysEmbed.AddField("Temperature",
-                "{todo}");
-            sysEmbed.AddField("Distro", "{todo}\n" +
+                $"**{spec.Temperature}**°C");
+            sysEmbed.AddField("Distro", $"{spec.Distro()}\n" +
                                         $"**64 Bit**: {Environment.Is64BitOperatingSystem}");
             sysEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             sysEmbed.WithCurrentTimestamp();
 
             serviceEmbed.AddField("**Plex**",
-                "{todo}", inline: true);
+                $"{services.Plex()}", inline: true);
             serviceEmbed.AddField("**Samba** [NAS]",
-                "{todo}", inline: true);
+                $"{services.Samba()}", inline: true);
             serviceEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             serviceEmbed.WithCurrentTimestamp();
 

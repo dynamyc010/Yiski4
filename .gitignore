@@ -226,3 +226,4 @@ MigrationBackup/
 .ionide/
 FodyWeavers.xsd
 nuget.config
+.vscode
