@@ -20,21 +20,21 @@ namespace yiski4{
         string GetServiceVersion(string serviceName) {
             using (var process = new Process()){
                 process.StartInfo.FileName = "/bin/sh";
-                process.StartInfo.Arguments = $"-c \"apt show {serviceName} | grep 'Version' | head -n 1 | cut -d ':' -f 2\"";
+                process.StartInfo.Arguments = $"-c \"apt-cache show {serviceName} | grep 'Version'\"";
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
                 process.WaitForExit();
-                return process.StandardOutput.ReadToEnd().Trim();
+                string output = process.StandardOutput.ReadToEnd().Trim();
+                return output.Substring(9,output.Length-9);
             }
         }
 
         public string Plex() {
-            return $"{GetServiceStatus("plexmediaserver")} \n{GetServiceVersion("plexmediaserver")}";
+            return $"{GetServiceStatus("plexmediaserver")} \n`v{GetServiceVersion("plexmediaserver")}`";
         }
 
         public string Samba() {
-            return $"{GetServiceStatus("smbd")} \n{GetServiceVersion("samba")}";
+            return $"{GetServiceStatus("smbd")} \n`v{GetServiceVersion("samba")}`";
         }
-        
     }
 }
