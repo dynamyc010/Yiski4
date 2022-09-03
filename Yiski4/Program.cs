@@ -4,6 +4,7 @@ using Discord.Net;
 using Discord.WebSocket;
 using EasyLogPlus;
 using Newtonsoft.Json;
+using Tommy;
 
 namespace yiski4 {
     public class Yiski4Bot {
@@ -31,10 +32,11 @@ namespace yiski4 {
             client.Log += Log;
             client.Ready += Client_Ready;
             client.SlashCommandExecuted += SlashCommandHandler;
-
-            var token = await File.ReadAllTextAsync("token.txt");
-
-            await client.LoginAsync(TokenType.Bot, token);
+            
+            using(StreamReader r = File.OpenText("bot.toml")){
+                var table = TOML.Parse(r);
+                await client.LoginAsync(TokenType.Bot, table["discord"]["token"]);
+            }
             await client.StartAsync();
 
             await Task.Delay(-1);
@@ -64,44 +66,30 @@ namespace yiski4 {
                 Color = 0x00a86b
             };
 
-            var spec = new Specifications();
-            var services = new Services();
+            var spec = new SystemInformationHandler();
+            var services = new ServicesHandler();
+            var drives = new DrivesHandler();
 
-            //////////////////////////////////////////////////////////
-            // Drives                                               //
-            // Reads drives from config and write them to the embed //
-            //////////////////////////////////////////////////////////
-            DriveInfo[] rpiDrives = DriveInfo.GetDrives();
-            string drives = "";
-
-            // TODO: Move this off to a config to read from
-            List<string> targets = new List<string>();
-            targets.Add("/");
-            targets.Add("/home");
-
-            foreach(var drive in rpiDrives.Where(x => targets.Contains(x.RootDirectory.ToString()))){
-                drives = $"{drives}**{drive.Name}**\n**{Math.Round((drive.TotalSize-drive.AvailableFreeSpace)/1000000000.0,1)}**GB / **{Math.Round(drive.TotalSize/1000000000.0,1)}**GB\n"+
-                $"**{Math.Round(drive.AvailableFreeSpace/1000000000.0,1)}**GB remains\n";
-            }
 
             sysEmbed.AddField("**Raspberry Pi Hardware**", // sys
                 $"**Model**: `{spec.Model}`\n" +
                 $"**Processor**: `{spec.Processor()}`\n" +
-                $"**Revision**: `{spec.ProcessorRevision()}`");
+                $"**Revision**: `{spec.ProcessorRevision()}`\n"+
+                $"**Bootloader date**: `{spec.EEPROMDate()}`\n");
             sysEmbed.AddField("Memory Usage", 
-                $"**{Math.Round(int.Parse(spec.MemUsed())/1024000.0,1)}**GB / **{Math.Round(int.Parse(spec.MemTotal())/1024000.0,1)}**GB");
+                $"**{Math.Round(int.Parse(spec.MemUsed())/1024.0/1024,1)}**GB / **{Math.Round(int.Parse(spec.MemTotal())/1024.0/1024,1)}**GB");
             sysEmbed.AddField("Swap Usage", 
-                $"**{Math.Round(int.Parse(spec.SwapUsed())/1024000.0,1)}**GB / **{Math.Round(int.Parse(spec.SwapTotal())/1024000.0,1)}**GB");
+                $"**{Math.Round(int.Parse(spec.SwapUsed())/1024.0/1024,1)}**GB / **{Math.Round(int.Parse(spec.SwapTotal())/1024.0/1024,1)}**GB");
             sysEmbed.AddField("**CPU Usage**",
                 $"{spec.ProcessorUsage()}");
-            sysEmbed.AddField("**Storage Usage**",$"{drives}");
+            sysEmbed.AddField("**Storage Usage**",$"{drives.Drives()}");
 
             sysEmbed.AddField("Uptime", 
                 $"{spec.Uptime()}");
             sysEmbed.AddField("Temperature",
-                $"**{spec.Temperature}**°C");
-            sysEmbed.AddField("Distro", $"{spec.Distro()}\n" +
-                                        $"**64 Bit**: {Environment.Is64BitOperatingSystem}");
+                $"**{spec.Temperature()}**°C");
+            sysEmbed.AddField("Distro", $"{spec.Distro()}\n" + 
+                $"**64 Bit**: {Environment.Is64BitOperatingSystem}");
             sysEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             sysEmbed.WithCurrentTimestamp();
 

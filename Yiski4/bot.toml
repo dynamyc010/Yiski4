@@ -1,0 +1,6 @@
+##############################
+#   Bot Configuration File   #
+#      Change the token!     #
+##############################
+[discord]
+token="xxxxxxxxx"

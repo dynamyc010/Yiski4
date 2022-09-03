@@ -1,0 +1,7 @@
+#################################
+#    Drive Configuration File   #
+#   Change the mount and name!  #
+#################################
+[drives]
+targetNames = ["Root", "Home"]
+targetMounts = ["/", "/home"]
