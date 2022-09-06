@@ -1,6 +1,6 @@
 namespace Yiski4.utils {
     public class RPiSoCModelsDictionary {
-        public static void RPiSoCModels() {
+        public IDictionary<Int32, String> RPiSoCModels() {
             IDictionary<Int32, String> RPiSoCModels = new Dictionary<Int32, string>();
             /* --- Start of BCM2835 Boards --- */
             // ref: https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#old-style-revision-codes
@@ -80,6 +80,8 @@ namespace Yiski4.utils {
             /* ---- Start of RP3A0 Boards ---- */
             RPiSoCModels.Add(0x902120, "RP3A0"); // RPi Zero 2 W - Revision 1.0 - 512MB
             /* ----- End of RP3A0 Boards ----- */
+
+            return RPiSoCModels;
         }
     }
 }

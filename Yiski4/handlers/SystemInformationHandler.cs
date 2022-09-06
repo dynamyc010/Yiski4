@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Yiski4.utils;
 
 namespace Yiski4.handlers {
     public class SystemInformationHandler {
@@ -13,7 +14,14 @@ namespace Yiski4.handlers {
                 return process.StandardOutput.ReadToEnd();
             }
         }
-        public string Processor() => "owo";
+        public string Processor() {
+            IDictionary<Int32,string> models = new RPiSoCModelsDictionary().RPiSoCModels();
+            string revisionString = ProcessorRevision();
+            if(revisionString == "Unknown") return "Unknown";
+            Int32 revision = Int32.Parse($"0x{revisionString}");
+            if(!models.ContainsKey(revision)) return "Unknown";
+            return models.Where(x => x.Key == revision).First().Value;
+        }
 
         public string ProcessorRevision() {
             var revision = RegisterCommand("cat /proc/cpuinfo | grep 'Revision' | head -n 1 | cut -d ':' -f 2").Trim();
