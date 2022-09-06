@@ -16,7 +16,7 @@ namespace Yiski4.handlers {
         string GetServiceStatus(string serviceName) => IsServiceRunning(serviceName) ? "🟩 Running" : "🟥 Stopped";
 
         string GetServiceVersion(string serviceName) {
-            try{
+            try {
                 using (var process = new Process()) {
                     process.StartInfo.FileName = "/bin/sh";
                     process.StartInfo.Arguments = $"-c \"apt-cache show {serviceName} | grep 'Version'\"";
@@ -27,11 +27,9 @@ namespace Yiski4.handlers {
                     return $"v{output.Substring(9, output.Length - 9)}";
                 }
             }
-            catch(System.ArgumentOutOfRangeException){
-                return "Unknown";
-            }
+            catch (ArgumentOutOfRangeException) { return "Unknown"; }
         }
-        
+
         public string Plex() => $"{GetServiceStatus("plexmediaserver")} \n`{GetServiceVersion("plexmediaserver")}`";
 
         public string Samba() => $"{GetServiceStatus("smbd")} \n`{GetServiceVersion("samba")}`";

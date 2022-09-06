@@ -1,7 +1,6 @@
-using EasyLogPlus;
 using System.Diagnostics;
+using System.Globalization;
 using Yiski4.utils;
-using Yiski4;
 
 namespace Yiski4.handlers {
     public class SystemInformationHandler {
@@ -17,15 +16,17 @@ namespace Yiski4.handlers {
             }
         }
         public string Processor() {
-            IDictionary<Int32,string> models = new RPiSoCModelsDictionary().RPiSoCModels();
-            string revisionString = ProcessorRevision();
-            if(revisionString == "Unknown") return "Unknown";
-            try{
-                Int32 revision = Int32.Parse(revisionString, System.Globalization.NumberStyles.HexNumber);
-                if(!models.ContainsKey(revision)) return "Unknown";
+            var models = new RPiSoCModelsDictionary().RPiSoCModels();
+            var revisionString = ProcessorRevision();
+            if (revisionString == "Unknown") { return "Unknown"; }
+
+            try {
+                var revision = int.Parse(revisionString, NumberStyles.HexNumber);
+                if (!models.ContainsKey(revision)) { return "Unknown"; }
+
                 return models.Where(x => x.Key == revision).First().Value;
             }
-            catch(System.FormatException err){
+            catch (FormatException err) {
                 Yiski4Bot.log.Error(err);
                 return "An error occured, please check Yiski4's logs.";
             }
