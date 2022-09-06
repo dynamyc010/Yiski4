@@ -9,8 +9,8 @@ using Yiski4.handlers;
 
 namespace Yiski4 {
     public class Yiski4Bot {
-        readonly Config cfg = new Config();
-        readonly Logger log = new Logger(); // hi - devin
+        public static Config cfg = new Config();
+        public static Logger log = new Logger(); // hi - devin
 
         DiscordSocketClient client;
 

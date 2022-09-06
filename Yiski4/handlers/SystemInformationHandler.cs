@@ -1,5 +1,7 @@
+using EasyLogPlus;
 using System.Diagnostics;
 using Yiski4.utils;
+using Yiski4;
 
 namespace Yiski4.handlers {
     public class SystemInformationHandler {
@@ -24,8 +26,8 @@ namespace Yiski4.handlers {
                 return models.Where(x => x.Key == revision).First().Value;
             }
             catch(System.FormatException err){
-                Console.WriteLine(err);
-                return "An error has occured.";
+                Yiski4Bot.log.Error(err);
+                return "An error occured, please check Yiski4's logs.";
             }
         }
 

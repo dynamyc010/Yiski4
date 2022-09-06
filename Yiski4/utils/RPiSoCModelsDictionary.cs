@@ -42,6 +42,7 @@ namespace Yiski4.utils {
             /* ---- End of BCM2836 Boards ---- */
             
             /* --- Start of BCM2837 Boards --- */
+            RPiSoCModels.Add(0xa02042, "BCM2837"); // RPi 2B BCM2837 Edition - Revision 1.2 - 1GB 
             RPiSoCModels.Add(0xa22042, "BCM2837"); // RPi 2B BCM2837 Edition - Revision 1.2 - 1GB 
             RPiSoCModels.Add(0xa02082, "BCM2837"); // RPi 3B - Revision 1.2 - 1GB
             RPiSoCModels.Add(0xa22082, "BCM2837"); // RPi 3B - Revision 1.2 - 1GB
