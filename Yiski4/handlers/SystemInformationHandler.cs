@@ -18,9 +18,15 @@ namespace Yiski4.handlers {
             IDictionary<Int32,string> models = new RPiSoCModelsDictionary().RPiSoCModels();
             string revisionString = ProcessorRevision();
             if(revisionString == "Unknown") return "Unknown";
-            Int32 revision = Int32.Parse($"0x{revisionString}");
-            if(!models.ContainsKey(revision)) return "Unknown";
-            return models.Where(x => x.Key == revision).First().Value;
+            try{
+                Int32 revision = Int32.Parse(revisionString, System.Globalization.NumberStyles.HexNumber);
+                if(!models.ContainsKey(revision)) return "Unknown";
+                return models.Where(x => x.Key == revision).First().Value;
+            }
+            catch(System.FormatException err){
+                Console.WriteLine(err);
+                return "An error has occured.";
+            }
         }
 
         public string ProcessorRevision() {
