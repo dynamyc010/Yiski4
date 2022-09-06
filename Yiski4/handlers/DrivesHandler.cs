@@ -1,6 +1,6 @@
 using Tommy;
 
-namespace yiski4 {
+namespace Yiski4.handlers {
     //////////////////////////////////////////////////////////
     // Drives                                               //
     // Reads drives from config and write them to the embed //

@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace yiski4 {
+namespace Yiski4.handlers {
     public class SystemInformationHandler {
         public string Model = File.Exists(@"/proc/device-tree/model") ? File.ReadAllText(@"/proc/device-tree/model") : "Not a Raspberry Pi!";
         string RegisterCommand(string command) {
@@ -22,8 +22,8 @@ namespace yiski4 {
         public string EEPROMDate() {
             if (File.Exists(@"/usr/bin/vcgencmd")) {
                 var timeCommand = RegisterCommand("vcgencmd bootloader_version | grep 'timestamp' | cut -d ' ' -f 2").Trim();
-                return timeCommand.ToString();
-                // return DateTime.Parse(timeCommand).ToShortDateString();
+                var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(timeCommand));
+                return dateTimeOffset.ToString();
             }
 
             return "Unknown";

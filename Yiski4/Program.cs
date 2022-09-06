@@ -5,13 +5,14 @@ using Discord.WebSocket;
 using EasyLogPlus;
 using Newtonsoft.Json;
 using Tommy;
+using Yiski4.handlers;
 
-namespace yiski4 {
+namespace Yiski4 {
     public class Yiski4Bot {
         readonly Config cfg = new Config();
+        readonly Logger log = new Logger(); // hi - devin
 
         DiscordSocketClient client;
-        readonly Logger log = new Logger(); // hi - devin
 
         void SetConfig() {
             cfg.ShowDate = true;

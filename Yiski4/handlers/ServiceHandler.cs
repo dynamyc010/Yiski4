@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace yiski4 {
+namespace Yiski4.handlers {
     public class ServicesHandler {
         bool IsServiceRunning(string serviceName) {
             using (var process = new Process()) {
