@@ -22,11 +22,11 @@ namespace Yiski4.handlers {
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
                 process.WaitForExit();
-                var output = process.StandardOutput.ReadToEnd().Trim();
+                var output = process.StandardOutput.ReadToEnd().Split('\n')[0].Trim();
                 return output.Substring(9, output.Length - 9);
             }
         }
-
+        
         public string Plex() => $"{GetServiceStatus("plexmediaserver")} \n`v{GetServiceVersion("plexmediaserver")}`";
 
         public string Samba() => $"{GetServiceStatus("smbd")} \n`v{GetServiceVersion("samba")}`";

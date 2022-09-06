@@ -14,6 +14,7 @@ namespace Yiski4.handlers {
             }
         }
         public string Processor() => "owo";
+
         public string ProcessorRevision() {
             var revision = RegisterCommand("cat /proc/cpuinfo | grep 'Revision' | head -n 1 | cut -d ':' -f 2").Trim();
             return revision != "" ? revision : "Unknown";
