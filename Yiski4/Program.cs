@@ -45,6 +45,7 @@ namespace Yiski4 {
         }
 
         async Task Client_Ready() { // it's 1 slash command, how bad can this beeeee - devin
+                                    // very - dyn
             var slshCmd = new SlashCommandBuilder();
 
             slshCmd.WithName("status");
@@ -95,7 +96,7 @@ namespace Yiski4 {
                 $"**{spec.Temperature()}**°C");
             sysEmbed.AddField("Distro",
                 $"{spec.Distro()}\n" +
-                $"**64 Bit**: {Environment.Is64BitOperatingSystem}");
+                $"**{spec.Is64Bit()}**");
             sysEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             sysEmbed.WithCurrentTimestamp();
 

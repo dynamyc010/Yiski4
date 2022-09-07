@@ -4,7 +4,7 @@ using Yiski4.utils;
 
 namespace Yiski4.handlers {
     public class SystemInformationHandler {
-        public string Model = File.Exists(@"/proc/device-tree/model") ? File.ReadAllText(@"/proc/device-tree/model") : "Not a Raspberry Pi!";
+        public string Model = File.Exists(@"/proc/device-tree/model") ? File.ReadAllText(@"/proc/device-tree/model") : "Unknown";
         string RegisterCommand(string command) {
             using (var process = new Process()) {
                 process.StartInfo.FileName = "/bin/sh";
@@ -68,5 +68,6 @@ namespace Yiski4.handlers {
         }
 
         public string Distro() => RegisterCommand("lsb_release -ds ; uname -mr");
+        public string Is64Bit() => Environment.Is64BitOperatingSystem ? "64-bit system" : "32-bit system";
     }
 }
