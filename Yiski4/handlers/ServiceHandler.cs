@@ -49,7 +49,7 @@ namespace Yiski4.handlers {
             foreach(var a in services["systemdID"]){
                 _systemdIDs.Add(a.ToString());
             }
-            foreach(var a in services["aptitudeIDs"]){
+            foreach(var a in services["aptitudeID"]){
                 _aptitudeIDs.Add(a.ToString());
             }
         }
