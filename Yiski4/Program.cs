@@ -100,8 +100,8 @@ namespace Yiski4 {
             sysEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             sysEmbed.WithCurrentTimestamp();
 
-            for(int i = 0; i < services.serviceIDs.Count; i++){
-                serviceEmbed.AddField($"**{services.serviceNames[i]}**",$"{services.ToString(services.serviceIDs[i])}",true);
+            for(int i = 0; i < services.systemdIDs.Count; i++){
+                serviceEmbed.AddField($"**{services.serviceNames[i]}**",$"{services.ToString(i)}",true);
             }
 
             // serviceEmbed.AddField("**Plex**",

@@ -7,8 +7,11 @@ namespace Yiski4.handlers {
         private List<string> _serviceNames = new List<string>();
         public ReadOnlyCollection<string> serviceNames {get => _serviceNames.AsReadOnly();}
 
-        private List<string> _serviceIDs = new List<string>();
-        public ReadOnlyCollection<string> serviceIDs {get => _serviceIDs.AsReadOnly();}
+        private List<string> _systemdIDs = new List<string>();
+        public ReadOnlyCollection<string> systemdIDs {get => _systemdIDs.AsReadOnly();}
+        
+        private List<string> _aptitudeIDs = new List<string>();
+        public ReadOnlyCollection<string> aptitudeIDs {get => _aptitudeIDs.AsReadOnly();}
 
         bool IsServiceRunning(string serviceName) {
             using (var process = new Process()) {
@@ -39,16 +42,19 @@ namespace Yiski4.handlers {
         }
 
         public ServicesHandler(){
-            var services = TOML.Parse(File.OpenText("drives.toml"))["services"];
+            var services = TOML.Parse(File.OpenText("services.toml"))["services"];
             foreach(var a in services["serviceNames"]){
                 _serviceNames.Add(a.ToString());
             }
-            foreach(var a in services["serviceIDs"]){
-                _serviceIDs.Add(a.ToString());
+            foreach(var a in services["systemdID"]){
+                _systemdIDs.Add(a.ToString());
+            }
+            foreach(var a in services["aptitudeIDs"]){
+                _aptitudeIDs.Add(a.ToString());
             }
         }
 
-        public string ToString(string serviceID) => $"{GetServiceStatus(serviceID)} \n`{GetServiceVersion(serviceID)}`";
+        public string ToString(int index) => $"{GetServiceStatus(systemdIDs[index])} \n`{GetServiceVersion(aptitudeIDs[index])}`";
         
         // public string Plex() => $"{GetServiceStatus("plexmediaserver")} \n`{GetServiceVersion("plexmediaserver")}`";
 
