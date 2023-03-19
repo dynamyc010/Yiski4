@@ -1,7 +1,15 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Tommy;
 
 namespace Yiski4.handlers {
     public class ServicesHandler {
+        private List<string> _serviceNames = new List<string>();
+        public ReadOnlyCollection<string> serviceNames {get => _serviceNames.AsReadOnly();}
+
+        private List<string> _serviceIDs = new List<string>();
+        public ReadOnlyCollection<string> serviceIDs {get => _serviceIDs.AsReadOnly();}
+
         bool IsServiceRunning(string serviceName) {
             using (var process = new Process()) {
                 process.StartInfo.FileName = "/bin/sh";
@@ -30,8 +38,20 @@ namespace Yiski4.handlers {
             catch (ArgumentOutOfRangeException) { return "Unknown"; }
         }
 
-        public string Plex() => $"{GetServiceStatus("plexmediaserver")} \n`{GetServiceVersion("plexmediaserver")}`";
+        public ServicesHandler(){
+            var services = TOML.Parse(File.OpenText("drives.toml"))["services"];
+            foreach(var a in services["serviceNames"]){
+                _serviceNames.Add(a.ToString());
+            }
+            foreach(var a in services["serviceIDs"]){
+                _serviceIDs.Add(a.ToString());
+            }
+        }
 
-        public string Samba() => $"{GetServiceStatus("smbd")} \n`{GetServiceVersion("samba")}`";
+        public string ToString(string serviceID) => $"{GetServiceStatus(serviceID)} \n`{GetServiceVersion(serviceID)}`";
+        
+        // public string Plex() => $"{GetServiceStatus("plexmediaserver")} \n`{GetServiceVersion("plexmediaserver")}`";
+
+        // public string Samba() => $"{GetServiceStatus("smbd")} \n`{GetServiceVersion("samba")}`";
     }
 }

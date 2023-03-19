@@ -100,12 +100,16 @@ namespace Yiski4 {
             sysEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             sysEmbed.WithCurrentTimestamp();
 
-            serviceEmbed.AddField("**Plex**",
-                $"{services.Plex()}",
-                true);
-            serviceEmbed.AddField("**Samba** [NAS]",
-                $"{services.Samba()}",
-                true);
+            for(int i = 0; i < services.serviceIDs.Count; i++){
+                serviceEmbed.AddField($"**{services.serviceNames[i]}**",$"{services.ToString(services.serviceIDs[i])}",true);
+            }
+
+            // serviceEmbed.AddField("**Plex**",
+            //     $"{services.Plex()}",
+            //     true);
+            // serviceEmbed.AddField("**Samba** [NAS]",
+            //     $"{services.Samba()}",
+            //     true);
             serviceEmbed.WithFooter($"{funniFooters[new Random().Next(0, funniFooters.Length)]}");
             serviceEmbed.WithCurrentTimestamp();
 

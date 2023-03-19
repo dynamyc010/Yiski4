@@ -1,0 +1,8 @@
+
+####################################
+#    Services Configuration File   #
+#     Change the mount and name!   #
+####################################
+[services]
+serviceNames = ["Plex", "Samba"]
+serviceIDs = ["plexmediaserver", "samba"]
